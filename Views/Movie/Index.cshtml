@@ -1,0 +1,28 @@
+@model IEnumerable<Movie>
+
+<div class="movies-page">
+    <h2>Топ-10 найкращих фільмів</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Список фільмів порожній.</div>
+    }
+    else
+    {
+        <div class="movies-grid">
+            @foreach (var movie in Model)
+            {
+                <div class="movie-card">
+                    <img src="@movie.PosterPath" alt="Постер фільму @movie.Title" class="movie-poster" />
+                    <div class="movie-body">
+                        <h4 class="movie-title">@movie.Title</h4>
+                        <p class="movie-meta">@movie.ReleaseYear &middot; @movie.Genre</p>
+                        <p class="movie-director"><strong>Режисер:</strong> @movie.Director</p>
+                        <p class="movie-description">@movie.Description</p>
+                        @Html.ActionLink("Детальніше", "Details", "Movie", new { id = movie.Id }, new { @class = "movie-link" })
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

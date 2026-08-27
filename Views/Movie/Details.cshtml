@@ -1,0 +1,15 @@
+@model Movie
+
+<div class="movie-details">
+    <div class="movie-details-poster">
+        <img src="@Model.PosterPath" alt="Постер фільму @Model.Title" />
+    </div>
+    <div class="movie-details-info">
+        <h2>@Model.Title <small>(@Model.ReleaseYear)</small></h2>
+        <p><strong>Режисер:</strong> @Model.Director</p>
+        <p><strong>Жанр:</strong> @Model.Genre</p>
+        <hr />
+        <p>@Model.Description</p>
+        @Html.ActionLink("← Назад до списку", "Index", "Movie", null, new { @class = "movie-link" })
+    </div>
+</div>
