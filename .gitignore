@@ -360,6 +360,4 @@ MigrationBackup/
 .ionide/
 
 # Fody - auto-generated XML schema
-FodyWeavers.xsd
-# Завантажені постери
-wwwroot/posters/
+FodyWeavers.xsd

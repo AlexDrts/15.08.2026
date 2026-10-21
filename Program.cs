@@ -16,7 +16,6 @@ namespace mvc
 
             var app = builder.Build();
 
-            // Сторінка 404 для неіснуючих адрес
             app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
             app.UseStaticFiles();

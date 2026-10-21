@@ -14,14 +14,12 @@ namespace mvc.Controllers
             env = environment;
         }
 
-        // Список фільмів
         public async Task<IActionResult> Index()
         {
             var movies = await db.Movies.OrderBy(m => m.Id).ToListAsync();
             return View(movies);
         }
 
-        // Детальна інформація
         public async Task<IActionResult> Details(int id)
         {
             var movie = await db.Movies.FirstOrDefaultAsync(m => m.Id == id);
@@ -29,7 +27,6 @@ namespace mvc.Controllers
             return View(movie);
         }
 
-        // Створення
         public IActionResult Create()
         {
             return View();
@@ -37,20 +34,18 @@ namespace mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Movie movie, IFormFile? posterFile)
+        public async Task<IActionResult> Create(Movie movie)
         {
-            CheckPosterFile(posterFile);
             if (!ModelState.IsValid) return View(movie);
 
-            if (posterFile != null)
-                movie.PosterPath = await SavePoster(posterFile);
+            if (movie.PosterFile != null)
+                movie.PosterPath = await SavePoster(movie.PosterFile);
 
             db.Movies.Add(movie);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        // Редагування
         public async Task<IActionResult> Edit(int id)
         {
             var movie = await db.Movies.FirstOrDefaultAsync(m => m.Id == id);
@@ -60,23 +55,21 @@ namespace mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Movie movie, IFormFile? posterFile)
+        public async Task<IActionResult> Edit(int id, Movie movie)
         {
             if (id != movie.Id) return NotFound();
             if (!await db.Movies.AnyAsync(m => m.Id == id)) return NotFound();
 
-            CheckPosterFile(posterFile);
             if (!ModelState.IsValid) return View(movie);
 
-            if (posterFile != null)
-                movie.PosterPath = await SavePoster(posterFile);
+            if (movie.PosterFile != null)
+                movie.PosterPath = await SavePoster(movie.PosterFile);
 
             db.Movies.Update(movie);
             await db.SaveChangesAsync();
             return RedirectToAction("Details", new { id = movie.Id });
         }
 
-        // Видалення — сторінка підтвердження
         public async Task<IActionResult> Delete(int id)
         {
             var movie = await db.Movies.FirstOrDefaultAsync(m => m.Id == id);
@@ -96,18 +89,6 @@ namespace mvc.Controllers
             return RedirectToAction("Index");
         }
 
-        // Дозволяємо лише зображення
-        private void CheckPosterFile(IFormFile? file)
-        {
-            if (file == null) return;
-
-            var allowed = new[] { ".jpg", ".jpeg", ".png", ".webp", ".gif" };
-            var ext = Path.GetExtension(file.FileName).ToLower();
-            if (!allowed.Contains(ext))
-                ModelState.AddModelError("posterFile", "Дозволені лише зображення: jpg, png, webp, gif");
-        }
-
-        // Зберігаємо файл у wwwroot/posters і повертаємо шлях до нього
         private async Task<string> SavePoster(IFormFile file)
         {
             var folder = Path.Combine(env.WebRootPath, "posters");

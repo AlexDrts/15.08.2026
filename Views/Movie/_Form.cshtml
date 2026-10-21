@@ -1,6 +1,8 @@
 @model Movie
 
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div asp-validation-summary="All" class="validation-box">
+    <strong>Виправте, будь ласка, помилки у формі:</strong>
+</div>
 <input type="hidden" asp-for="Id" />
 
 <div class="mb-3">
@@ -34,9 +36,9 @@
 </div>
 
 <div class="mb-3">
-    <label class="form-label" for="posterFile">Постер (файл з пристрою)</label>
-    <input type="file" name="posterFile" id="posterFile" class="form-control" accept="image/*" />
-    @Html.ValidationMessage("posterFile", null, new { @class = "text-danger" })
+    <label asp-for="PosterFile" class="form-label"></label>
+    <input asp-for="PosterFile" type="file" class="form-control" accept="image/*" />
+    <span asp-validation-for="PosterFile" class="text-danger"></span>
 </div>
 
 <div class="mb-3">

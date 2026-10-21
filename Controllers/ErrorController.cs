@@ -4,7 +4,6 @@ namespace mvc.Controllers
 {
     public class ErrorController : Controller
     {
-        // Сюди перенаправляє UseStatusCodePagesWithReExecute
         [Route("Error/{code}")]
         public IActionResult Index(int code)
         {

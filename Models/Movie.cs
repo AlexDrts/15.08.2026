@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using mvc.Validation;
 
 namespace mvc
 {
@@ -22,12 +24,18 @@ namespace mvc
         public string? Genre { get; set; }
 
         [Required(ErrorMessage = "Вкажіть рік випуску")]
-        [Range(1888, 2030, ErrorMessage = "Рік має бути від 1888 до 2030")]
+        [Range(1888, 2100, ErrorMessage = "Рік має бути не раніше 1888")]
+        [NotFutureYear(ErrorMessage = "Рік випуску не може бути більшим за поточний")]
         [Display(Name = "Рік випуску")]
         public int ReleaseYear { get; set; }
 
         [Display(Name = "Постер (URL)")]
         public string? PosterPath { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Постер (файл з пристрою)")]
+        [AllowedExtensions(".jpg", ".jpeg", ".png", ".webp", ".gif", ErrorMessage = "Дозволені лише зображення: jpg, jpeg, png, webp, gif")]
+        public IFormFile? PosterFile { get; set; }
 
         [Required(ErrorMessage = "Додайте опис")]
         [StringLength(2000, MinimumLength = 10, ErrorMessage = "Опис має містити від 10 до 2000 символів")]
