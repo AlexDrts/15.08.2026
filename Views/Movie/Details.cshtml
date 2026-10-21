@@ -1,4 +1,7 @@
 @model Movie
+@{
+    ViewData["Title"] = Model.Title;
+}
 
 <div class="movie-details">
     <div class="movie-details-poster">
@@ -6,10 +9,14 @@
     </div>
     <div class="movie-details-info">
         <h2>@Model.Title <small>(@Model.ReleaseYear)</small></h2>
+        <p><strong>Рік випуску:</strong> @Model.ReleaseYear</p>
         <p><strong>Режисер:</strong> @Model.Director</p>
         <p><strong>Жанр:</strong> @Model.Genre</p>
         <hr />
         <p>@Model.Description</p>
-        @Html.ActionLink("← Назад до списку", "Index", "Movie", null, new { @class = "movie-link" })
+
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Редагувати</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Видалити</a>
+        <a asp-action="Index" class="btn btn-link">← Назад до списку</a>
     </div>
 </div>

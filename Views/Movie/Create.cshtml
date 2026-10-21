@@ -1,0 +1,17 @@
+@model Movie
+@{
+    ViewData["Title"] = "Додати фільм";
+}
+
+<h2 class="mt-4">Додати фільм</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data" class="movie-form">
+    <partial name="_Form" model="Model" />
+
+    <button type="submit" class="btn btn-success">Зберегти</button>
+    <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

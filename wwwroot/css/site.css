@@ -97,3 +97,17 @@
     flex: 1;
     min-width: 280px;
 }
+
+.body-content {
+    padding-bottom: 40px;
+}
+
+.movie-form {
+    max-width: 600px;
+    margin-top: 20px;
+}
+
+.edit-poster {
+    width: 150px;
+    border-radius: 6px;
+}

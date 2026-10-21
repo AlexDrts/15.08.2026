@@ -1,0 +1,46 @@
+@model Movie
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="mb-3">
+    <label asp-for="Title" class="form-label"></label>
+    <input asp-for="Title" class="form-control" />
+    <span asp-validation-for="Title" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Director" class="form-label"></label>
+    <input asp-for="Director" class="form-control" />
+    <span asp-validation-for="Director" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Genre" class="form-label"></label>
+    <input asp-for="Genre" class="form-control" />
+    <span asp-validation-for="Genre" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="ReleaseYear" class="form-label"></label>
+    <input asp-for="ReleaseYear" class="form-control" />
+    <span asp-validation-for="ReleaseYear" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Description" class="form-label"></label>
+    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label class="form-label" for="posterFile">Постер (файл з пристрою)</label>
+    <input type="file" name="posterFile" id="posterFile" class="form-control" accept="image/*" />
+    @Html.ValidationMessage("posterFile", null, new { @class = "text-danger" })
+</div>
+
+<div class="mb-3">
+    <label asp-for="PosterPath" class="form-label">або посилання на постер (URL)</label>
+    <input asp-for="PosterPath" class="form-control" />
+    <span asp-validation-for="PosterPath" class="text-danger"></span>
+</div>

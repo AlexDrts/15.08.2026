@@ -1,0 +1,18 @@
+@model Movie
+@{
+    ViewData["Title"] = "Видалити фільм";
+}
+
+<div class="mt-4">
+    <h2>Видалити фільм?</h2>
+    <div class="alert alert-warning">Ви впевнені, що хочете видалити фільм <strong>@Model.Title</strong> (@Model.ReleaseYear)?</div>
+
+    <p><strong>Режисер:</strong> @Model.Director</p>
+    <p><strong>Жанр:</strong> @Model.Genre</p>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Так, видалити</button>
+        <a asp-action="Index" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>

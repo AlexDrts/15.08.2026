@@ -1,4 +1,7 @@
 @model IEnumerable<Movie>
+@{
+    ViewData["Title"] = "Список фільмів";
+}
 
 <div class="movies-page">
     <h2>Топ-10 найкращих фільмів</h2>
@@ -19,7 +22,11 @@
                         <p class="movie-meta">@movie.ReleaseYear &middot; @movie.Genre</p>
                         <p class="movie-director"><strong>Режисер:</strong> @movie.Director</p>
                         <p class="movie-description">@movie.Description</p>
-                        @Html.ActionLink("Детальніше", "Details", "Movie", new { id = movie.Id }, new { @class = "movie-link" })
+                        <div class="d-flex gap-1">
+                            <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary btn-sm">Детальніше</a>
+                            <a asp-action="Edit" asp-route-id="@movie.Id" class="btn btn-outline-secondary btn-sm">Редагувати</a>
+                            <a asp-action="Delete" asp-route-id="@movie.Id" class="btn btn-outline-danger btn-sm">Видалити</a>
+                        </div>
                     </div>
                 </div>
             }

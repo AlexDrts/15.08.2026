@@ -1,0 +1,23 @@
+@model Movie
+@{
+    ViewData["Title"] = "Редагувати фільм";
+}
+
+<h2 class="mt-4">Редагувати: @Model.Title</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data" class="movie-form">
+    @if (!string.IsNullOrEmpty(Model.PosterPath))
+    {
+        <p>Поточний постер:</p>
+        <img src="@Model.PosterPath" alt="Поточний постер" class="edit-poster mb-3" />
+    }
+
+    <partial name="_Form" model="Model" />
+
+    <button type="submit" class="btn btn-primary">Зберегти зміни</button>
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Скасувати</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
