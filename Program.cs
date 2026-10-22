@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using mvc.Repositories;
+using mvc.Services;
 
 namespace mvc
 {
@@ -11,6 +13,9 @@ namespace mvc
             string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services.AddDbContext<MovieContext>(options => options.UseSqlServer(connection));
+
+            builder.Services.AddScoped<IRepository, Repository>();
+            builder.Services.AddScoped<IMovieService, MovieService>();
 
             builder.Services.AddControllersWithViews();
 

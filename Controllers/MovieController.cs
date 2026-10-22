@@ -1,28 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using mvc.Services;
 
 namespace mvc.Controllers
 {
     public class MovieController : Controller
     {
-        MovieContext db;
+        IMovieService movieService;
         IWebHostEnvironment env;
 
-        public MovieController(MovieContext context, IWebHostEnvironment environment)
+        public MovieController(IMovieService movieService, IWebHostEnvironment environment)
         {
-            db = context;
+            this.movieService = movieService;
             env = environment;
         }
 
         public async Task<IActionResult> Index()
         {
-            var movies = await db.Movies.OrderBy(m => m.Id).ToListAsync();
+            var movies = await movieService.GetAllAsync();
             return View(movies);
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var movie = await db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await movieService.GetByIdAsync(id);
             if (movie == null) return NotFound();
             return View(movie);
         }
@@ -41,14 +41,13 @@ namespace mvc.Controllers
             if (movie.PosterFile != null)
                 movie.PosterPath = await SavePoster(movie.PosterFile);
 
-            db.Movies.Add(movie);
-            await db.SaveChangesAsync();
+            await movieService.CreateAsync(movie);
             return RedirectToAction("Index");
         }
 
         public async Task<IActionResult> Edit(int id)
         {
-            var movie = await db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await movieService.GetByIdAsync(id);
             if (movie == null) return NotFound();
             return View(movie);
         }
@@ -58,21 +57,19 @@ namespace mvc.Controllers
         public async Task<IActionResult> Edit(int id, Movie movie)
         {
             if (id != movie.Id) return NotFound();
-            if (!await db.Movies.AnyAsync(m => m.Id == id)) return NotFound();
 
             if (!ModelState.IsValid) return View(movie);
 
             if (movie.PosterFile != null)
                 movie.PosterPath = await SavePoster(movie.PosterFile);
 
-            db.Movies.Update(movie);
-            await db.SaveChangesAsync();
+            if (!await movieService.UpdateAsync(movie)) return NotFound();
             return RedirectToAction("Details", new { id = movie.Id });
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var movie = await db.Movies.FirstOrDefaultAsync(m => m.Id == id);
+            var movie = await movieService.GetByIdAsync(id);
             if (movie == null) return NotFound();
             return View(movie);
         }
@@ -81,11 +78,7 @@ namespace mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await db.Movies.FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null) return NotFound();
-
-            db.Movies.Remove(movie);
-            await db.SaveChangesAsync();
+            if (!await movieService.DeleteAsync(id)) return NotFound();
             return RedirectToAction("Index");
         }
 
